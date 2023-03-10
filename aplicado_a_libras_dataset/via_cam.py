@@ -55,11 +55,13 @@ while True:
     # Capture the video frame
     # by frame
     ret, frame = vid.read()
+    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     frame = cv2.resize(frame, (64, 64))
 
     # Display the resulting frame
     cv2.imshow('frame', frame)
-
+    print(list(frame.flatten()))
+    pred = wsd.classify((frame.flatten()))[0]
     # the 'q' button is set as the
     # quitting button you may use any
     # desired button of your choice
