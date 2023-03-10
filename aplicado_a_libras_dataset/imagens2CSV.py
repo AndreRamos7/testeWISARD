@@ -32,7 +32,7 @@ df = pd.DataFrame(None, columns=rotulos)
 for dir in lista_dir:
     if os.path.isdir(dir):
         print(os.path.join(root, dir))
-        if dir == "train":
+        if dir == "test":
             train_dir = os.path.join(root, dir)
             letras_dir = os.listdir(train_dir)
 
