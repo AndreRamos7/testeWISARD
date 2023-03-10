@@ -65,8 +65,6 @@ for dir in lista_dir:
                             #np_array = imgRSZ.flatten()
                             #print(array_geral_train)
 
-                            #np.savetxt('values.csv', np_array, delimiter=",")
-
 
                             '''list = ["Hyperion", 27000, "60days", 2000]
                             df.loc[len(df)] = list
