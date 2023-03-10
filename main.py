@@ -2,10 +2,10 @@
 import wisardpkg as wp
 
 X = [
-      [1,1,1,0,0,0,0,0],
-      [1,1,1,1,0,0,0,0],
-      [0,0,0,0,1,1,1,1],
-      [0,0,0,0,0,1,1,1]
+      [1,1,1,0,2,0,0,0],
+      [1,2,1,1,0,0,0,0],
+      [0,0,0,0,1,2,1,1],
+      [0,0,2,0,0,1,1,1]
     ]
 
 X2 = [
@@ -30,24 +30,28 @@ ignoreZero  = False # optional; causes the rams to ignore the address 0
 # when True, WiSARD prints the progress of train() and classify()
 verbose = True
 
-wsd = wp.Wisard(addressSize, ignoreZero=ignoreZero, verbose=verbose)
+#wsd = wp.Wisard(addressSize, ignoreZero=ignoreZero, verbose=verbose)
 
+wsd = wp.Wisard(
+  5, # addressSize
+  bleachingActivated=True,
+  ignoreZero=False,
+  completeAddressing=True,
+  verbose=True,
+  indexes=[],
+  base=256,
+  confidence=1,
+  returnActivationDegree=False,
+  returnConfidence=False,
+  returnClassesDegrees=False
+)
 # train using the input data
 wsd.train(X, y)
 
 # classify some data
-out = wsd.classify(X2)
+out = wsd.classify(X)
 
 # the output of classify is a string list in the same sequence as the input
-for i, d in enumerate(X2):
+for i, d in enumerate(X):
     print(out[i], d)
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')

@@ -1,6 +1,6 @@
 '''
-Este algoritmo exibe, em janela, uma imagem do sinal de libras do dataset da pasta archive.
-E modifica a imagem para ser exibida em preto e branco.
+Este algoritmo exibe, em janela, uma imagem do sinal de libras do dataset da pasta archive
+e modifica a imagem para ser exibida em preto e branco.
 
 André de J A Ramos
 '''
