@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
 import wisardpkg as wp
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
 train = pd.read_csv("imagens2csv/train.csv")
 test = pd.read_csv("imagens2csv/test.csv")
@@ -41,6 +43,9 @@ wsd.train(X_train, y_train)
 print("Predicting test data...")
 pred = wsd.classify(X_test)
 print("  - Accuracy on test data: {:.2f}%".format(accuracy(y_test, pred)*100))
+cm = confusion_matrix(y_test, pred, labels=[f'{a}' for a in "ABCDEFGILMNOPQRSTUVWY"])
+print(cm)
+
 exit(0)
 o_img = cv2.imread("O.png", cv2.IMREAD_GRAYSCALE)
 y_img = cv2.imread("Y.png", cv2.IMREAD_GRAYSCALE)
