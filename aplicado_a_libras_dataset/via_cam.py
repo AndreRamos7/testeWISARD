@@ -5,15 +5,13 @@ from matplotlib import pyplot as plt
 import wisardpkg as wp
 
 train = pd.read_csv("imagens2csv/train.csv")
-
-#print(train)
 test = pd.read_csv("imagens2csv/test.csv")
-df = train.drop(labels=['label'], axis=1)
 
+X_train = train.drop(labels=['label'], axis=1).astype('int').values.tolist()
+y_train = train['label'].astype('str').values.tolist()
 
-X_train = df.values.tolist()
-y_train = train['label'].values.astype('str').tolist()
-X_test = test.values.tolist()
+X_test = test.drop(labels=['label'], axis=1).astype('int').values.tolist()
+y_test = test['label'].astype('str').values.tolist()
 
 
 def accuracy(y, y_hat):
@@ -24,7 +22,7 @@ def accuracy(y, y_hat):
   return count / len(y)
 
 wsd = wp.Wisard(
-  5, # addressSize
+  3, # addressSize 5
   bleachingActivated=True,
   ignoreZero=False,
   completeAddressing=True,
@@ -40,31 +38,42 @@ wsd = wp.Wisard(
 print("Training...")
 wsd.train(X_train, y_train)
 
-print("Predicting train data...")
-pred = wsd.classify(X_train)
-print("  - Accuracy on train data: {:.2f}%".format(accuracy(y_train, pred)*100))
-
-
-#pred = wsd.classify([])
-
+print("Predicting test data...")
+pred = wsd.classify(X_test)
+print("  - Accuracy on test data: {:.2f}%".format(accuracy(y_test, pred)*100))
+exit(0)
+o_img = cv2.imread("O.png", cv2.IMREAD_GRAYSCALE)
+y_img = cv2.imread("Y.png", cv2.IMREAD_GRAYSCALE)
+o_img = cv2.resize(o_img, (64, 64))
+y_img = cv2.resize(y_img, (64, 64))
+cv2.imshow("o_img", o_img)
+cv2.imshow("y_img", y_img)
+flat_o = o_img.flatten()
+flat_y = y_img.flatten()
+pred = wsd.classify([flat_y,flat_o])
+print(pred)
+#exit(0)
 # define a video capture object
 vid = cv2.VideoCapture(0)
 
 while True:
-
-    # Capture the video frame
-    # by frame
-    ret, frame = vid.read()
-    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    ret, frame1 = vid.read()
+    frame = cv2.cvtColor(frame1, cv2.COLOR_BGR2GRAY)
     frame = cv2.resize(frame, (64, 64))
-
+    flatten = frame.flatten()
+    pred = wsd.classify([flatten])
+    #print(flatten)
     # Display the resulting frame
-    cv2.imshow('frame', frame)
-    print(list(frame.flatten()))
-    pred = wsd.classify((frame.flatten()))[0]
+    #if pred[0]['confidence'] != 1.0:
+    cv2.putText(frame1, f"{pred[0]}", (150, 150), cv2.FONT_HERSHEY_TRIPLEX, 5, 255)
+
+    cv2.imshow('frame1', frame1)
+
+
     # the 'q' button is set as the
     # quitting button you may use any
     # desired button of your choice
+    print(pred[0])
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 

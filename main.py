@@ -49,8 +49,9 @@ wsd = wp.Wisard(
 wsd.train(X, y)
 
 # classify some data
-out = wsd.classify(X)
-
+out = wsd.classify([X[1]])
+print(out)
+exit(0)
 # the output of classify is a string list in the same sequence as the input
 for i, d in enumerate(X):
     print(out[i], d)

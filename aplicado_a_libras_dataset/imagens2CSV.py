@@ -23,9 +23,9 @@ São 4096 pixels. Esse trecho de código cria um rótulo para as colunas do data
 rotulos = np.array([f'pixel{a}' for a in range(0, 4096)])
 rotulos = np.insert(rotulos, 0, 'label', axis=0)
 print(rotulos)
-df = pd.DataFrame(None, columns=rotulos)
 
 
+a = np.array(['A', 'B', 'C', 'D'])
 '''
 
 '''
@@ -39,7 +39,8 @@ for dir in lista_dir:
             for letra_dir in letras_dir:
                 print(letra_dir)
                 path_full = os.path.join(root, dir, letra_dir)
-                if os.path.isdir(path_full):
+                df = pd.DataFrame(None, columns=rotulos)
+                if os.path.isdir(path_full):# and not (letra_dir in a):
                     files = os.listdir(path_full)
                     amnt_files = len(files)
                     count = 0
@@ -48,9 +49,9 @@ for dir in lista_dir:
                         if os.path.isfile(os.path.join(path_full, file)):
                             count += 1
                             print(os.path.join("archive", dir, letra_dir, file))
-                            os.chdir("..")
-                            imagem = cv2.imread(os.path.join("archive", dir, letra_dir, file), cv2.IMREAD_GRAYSCALE)
-                            imgRSZ = cv2.resize(imagem, (10, 10))
+                            #os.chdir("..")
+                            imagem = cv2.imread(os.path.join("..", "archive", dir, letra_dir, file), cv2.IMREAD_GRAYSCALE)
+                            #imgRSZ = cv2.resize(imagem, (10, 10))
                             array = [np.hstack(([letra_dir], imagem.flatten()))]
 
                             #if(array_geral_train.size == 0):
@@ -72,15 +73,14 @@ for dir in lista_dir:
 
                             #cv2.imshow("file", imagem)
 
-                            os.chdir("archive")
+                            #os.chdir("archive")
 
                             #cv2.waitKey(0)
+                    df.to_csv(os.path.join("..", "aplicado_a_libras_dataset", "imagens2csv", f"{letra_dir}Tfile.csv"))
 
-                            if count >= 3:
-                                break
-print(df)
-os.chdir("..")
-df.to_csv("file.csv")
+#print(df)
+#os.chdir("..")
+#df.to_csv("file.csv")
 
 
 
