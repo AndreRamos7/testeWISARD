@@ -1,4 +1,4 @@
-import cv2, os
+import cv2, os, json
 import numpy as np
 import pandas as pd
 from matplotlib import pyplot as plt
@@ -14,6 +14,9 @@ y_train = train['label'].astype('str').values.tolist()
 
 X_test = test.drop(labels=['label'], axis=1).astype('int').values.tolist()
 y_test = test['label'].astype('str').values.tolist()
+
+
+
 
 
 def accuracy(y, y_hat):
@@ -40,11 +43,24 @@ wsd = wp.Wisard(
 print("Training...")
 wsd.train(X_train, y_train)
 
+if str(input("deseja salvar o treinamento (modelo_treinado.json)? (yes/no)")) == "yes":
+    # salva o treinamento em JSON
+    ojsonout = wsd.json()
+    # Serializing json
+    json_object = json.dumps(ojsonout, indent=4)
+
+    # Writing to sample.json
+    with open("modelo_treinado.json", "w") as outfile:
+        outfile.write(json_object)
+
+
 print("Predicting test data...")
 pred = wsd.classify(X_test)
 print("  - Accuracy on test data: {:.2f}%".format(accuracy(y_test, pred)*100))
 cm = confusion_matrix(y_test, pred, labels=[f'{a}' for a in "ABCDEFGILMNOPQRSTUVWY"])
 print(cm)
+
+
 
 exit(0)
 o_img = cv2.imread("O.png", cv2.IMREAD_GRAYSCALE)
