@@ -15,10 +15,6 @@ y_train = train['label'].astype('str').values.tolist()
 X_test = test.drop(labels=['label'], axis=1).astype('int').values.tolist()
 y_test = test['label'].astype('str').values.tolist()
 
-
-
-
-
 def accuracy(y, y_hat):
   count = 0
   for i in range(len(y)):
