@@ -23,7 +23,7 @@ def accuracy(y, y_hat):
 
 
 # Writing to sample.json
-with open("modelo_treinado.json", "r") as openfile:
+with open("sample.json", "r") as openfile:
     json_object = json.load(openfile)
 
 wsd = wp.Wisard(json_object)
